@@ -1,0 +1,14 @@
+# Java
+target/
+*.iml
+.idea/
+# Python
+__pycache__/
+.venv/
+#.env
+# OS noise
+.DS_Store
+# Node (if any UI later)
+node_modules/
+# Docker
+*.log
