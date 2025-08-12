@@ -18,3 +18,20 @@ jobs:
           java-version: '17'
       - name: Run tests
         run: mvn -B -q clean test
+
+  python-tests:
+    runs-on: ubuntu-latest                     # GitHub spins up a fresh Linux VM
+  d efaults:
+      run:
+        working-directory: apps/python-service # run commands from this folder
+  steps:
+    - uses: actions/checkout@v4              # fetch your repo code into the VM
+    - uses: actions/setup-python@v5          # install Python
+      with:
+        python-version: '3.11'               # pick a known version
+    - name: Install deps
+      run: |
+        python -m pip install --upgrade pip  # modern pip
+        pip install -r requirements.txt      # install FastAPI/pytest/etc.
+    - name: Run tests
+      run: pytest -q                         # auto-discovers tests/test_*.py
