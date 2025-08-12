@@ -35,3 +35,37 @@ jobs:
         pip install -r requirements.txt      # install FastAPI/pytest/etc.
     - name: Run tests
       run: pytest -q                         # auto-discovers tests/test_*.py
+
+  docker-build-and-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build java image
+        run: docker build -f apps/java-service/Dockerfile -t java-service:ci .
+
+      - name: Build python image
+        run: docker build -f apps/python-service/Dockerfile -t python-service:ci .
+
+      # Scan the built images for HIGH/CRITICAL vulns
+      - name: Scan java image with Trivy
+        uses: aquasecurity/trivy-action@0.20.0
+        with:
+          image-ref: java-service:ci
+          format: 'table'
+          exit-code: '1'
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
+
+      - name: Scan python image with Trivy
+        uses: aquasecurity/trivy-action@0.20.0
+        with:
+          image-ref: python-service:ci
+          format: 'table'
+          exit-code: '1'
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
+

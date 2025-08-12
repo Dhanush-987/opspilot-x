@@ -1,0 +1,14 @@
+services:
+  java:
+    build:
+      context: .
+      dockerfile: apps/java-service/Dockerfile
+    ports:
+      - "8080:8080"
+
+  python:
+    build:
+      context: .
+      dockerfile: apps/python-service/Dockerfile
+    ports:
+      - "8000:8000"
