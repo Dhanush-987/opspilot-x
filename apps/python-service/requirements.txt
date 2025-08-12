@@ -1,0 +1,4 @@
+fastapi==0.115.0   # web framework for the API
+uvicorn==0.30.1    # ASGI server to run FastAPI locally
+pytest==8.2.0      # test runner (CI and local)
+httpx==0.27.0      # HTTP client used under the hood by TestClient
